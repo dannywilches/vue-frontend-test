@@ -10,37 +10,37 @@
                 <form>
                   <div class="form-group mt-2 mb-2">
                     <label for="title">Nombre del Hotel: </label>
-                    <input type="text" v-model="hotel.nombre" class="form-control form-control-sm">
-                    <span v-if="hotel.nombre" class="" style="font-size: 12px; color:red;">
-                        Este campo es requerido
+                    <input type="text" v-model="nombre" @input="v$.nombre.$touch()" class="form-control form-control-sm">
+                    <span v-if="v$.nombre.$invalid && v$.nombre.$dirty" class="" style="font-size: 12px; color:red;">
+                      Este campo es requerido
                     </span>
                   </div>
                   <div class="form-group mt-2 mb-2">
                     <label for="title">Dirección: </label>
-                    <input type="text" v-model="hotel.direccion" class="form-control form-control-sm">
-                    <span v-if="hotel.direccion" class="" style="font-size: 12px; color:red;">
-                        Este campo es requerido
+                    <input type="text" v-model="direccion" @input="v$.direccion.$touch()" class="form-control form-control-sm">
+                    <span v-if="v$.direccion.$invalid && v$.direccion.$dirty" class="" style="font-size: 12px; color:red;">
+                      Este campo es requerido
                     </span>
                   </div>
                   <div class="form-group mt-2 mb-2">
                     <label for="title">Ciudad: </label>
-                    <input type="text" v-model="hotel.ciudad" class="form-control form-control-sm">
-                    <span v-if="hotel.ciudad" class="" style="font-size: 12px; color:red;">
-                        Este campo es requerido
+                    <input type="text" v-model="ciudad" @input="v$.ciudad.$touch()" class="form-control form-control-sm">
+                    <span v-if="v$.ciudad.$invalid && v$.ciudad.$dirty" class="" style="font-size: 12px; color:red;">
+                      Este campo es requerido
                     </span>
                   </div>
                   <div class="form-group mt-2 mb-2">
                     <label for="title">Nit: </label>
-                    <input type="text" v-model="hotel.nit" class="form-control form-control-sm">
-                    <span v-if="hotel.nit" class="" style="font-size: 12px; color:red;">
-                        Este campo es requerido
+                    <input type="text" v-model="nit" @input="v$.nit.$touch()" class="form-control form-control-sm">
+                    <span v-if="v$.nit.$invalid && v$.nit.$dirty" class="" style="font-size: 12px; color:red;">
+                      Este campo es requerido
                     </span>
                   </div>
                   <div class="form-group mt-2 mb-2">
                     <label for="title">Número de habitaciones: </label>
-                    <input type="number" v-model="hotel.num_hab" class="form-control form-control-sm">
-                    <span v-if="hotel.num_hab" class="" style="font-size: 12px; color:red;">
-                        Este campo es requerido
+                    <input type="number" v-model="num_hab" @input="v$.num_hab.$touch()" class="form-control form-control-sm">
+                    <span v-if="v$.num_hab.$invalid && v$.num_hab.$dirty" class="" style="font-size: 12px; color:red;">
+                      Este campo es requerido y debe ser mayor a cero
                     </span>
                   </div>
                 </form>
@@ -59,32 +59,69 @@
   </div>
 </template>
 <script>
+import { useVuelidate } from '@vuelidate/core'
+import { minValue, required } from '@vuelidate/validators'
+
 export default {
   name: 'CrearHoteles',
-  data(){
+  setup() {
     return {
-      hotel: {
-        nombre: '',
-        direccion: '',
-        ciudad: '',
-        nit: '',
-        num_hab: '',
-      },
-
+      v$: useVuelidate()
+    }
+  },
+  data(){
+    /**
+     * Data modelo para los inputs del formulario
+     */
+    return {
+      nombre: '',
+      direccion: '',
+      ciudad: '',
+      nit: '',
+      num_hab: '',
     }
   },
   methods:{
+    /**
+     * Función que recolecta la información del Hotel para crear el Hotel
+     */
     guardarHotel(){
-      console.log(this.hotel);
-      alert('Guardar hotel');
+      let hotel = {
+        nombre: this.nombre,
+        direccion: this.direccion,
+        ciudad: this.ciudad,
+        nit: this.nit,
+        num_hab: this.num_hab,
+      }
+      console.log(hotel);
+      // this.$router.push('hoteles');
     }
   },
-  computed: {
-    numHoteles() {
-      const quantity = (this.listaHoteles) ? this.listaHoteles.length : 0;
-      return quantity;
+  /**
+   * Validaciones del formulario
+   */
+  validations() {
+    return {
+      nombre: {
+        required
+      },
+      direccion: {
+        required
+      },
+      ciudad: {
+        required
+      },
+      nit: {
+        required
+      },
+      num_hab: {
+        minValue: minValue(1),
+        required
+      },
     }
-  }
+
+  },
+
 }
 </script>
 <style scoped>
