@@ -10,11 +10,11 @@
                 <form>
                   <div class="form-group mt-2 mb-2">
                     <label for="title">Hotel: </label>
-                    <select v-model="hotel" @input="v$.hotel.$touch()" class="form-control form-control-sm">
-                      <option v-for="hotel of listaHoteles" value=""></option>
+                    <select v-model="id_hotel" @input="v$.id_hotel.$touch()" class="form-control form-control-sm">
                       <option value="">--</option>
+                      <option v-for="hotel of listaHoteles" :value="hotel.id">{{ hotel.nombre }}</option>
                     </select>
-                    <span v-if="v$.hotel.$invalid && v$.hotel.$dirty" class="" style="font-size: 12px; color:red;">
+                    <span v-if="v$.id_hotel.$invalid && v$.id_hotel.$dirty" class="" style="font-size: 12px; color:red;">
                       Este campo es requerido
                     </span>
                   </div>
@@ -50,13 +50,6 @@
                       Este campo es requerido
                     </span>
                   </div>
-                  <!-- <div class="form-group mt-2 mb-2">
-                    <label for="title">Número de habitaciones: </label>
-                    <input type="number" v-model="num_hab" @input="v$.num_hab.$touch()" class="form-control form-control-sm">
-                    <span v-if="v$.num_hab.$invalid && v$.num_hab.$dirty" class="" style="font-size: 12px; color:red;">
-                        Este campo es requerido
-                    </span>
-                  </div> -->
                 </form>
               </div>
           </div>
@@ -64,8 +57,8 @@
       <div class="card-footer">
         <div class="row">
           <div class="col-sm-12 text-center">
-            <button class="btn btn-sm btn-success mx-auto" v-on:click="guardarHotel">Registrar Hotel</button>
-            <router-link class="btn btn-sm btn-danger" tag="button" to="/hoteles">Cancelar</router-link>
+            <button class="btn btn-sm btn-success mx-auto" v-on:click="guardarHabitacion">Registrar Habitación</button>
+            <router-link class="btn btn-sm btn-danger" tag="button" to="/habitaciones">Cancelar</router-link>
           </div>
         </div>
       </div>
@@ -89,7 +82,7 @@ export default {
      */
     return {
       listaHoteles: [],
-      hotel: '',
+      id_hotel: '',
       num_habs: '',
       tipo_hab: '',
       acomodacion: '',
@@ -97,25 +90,37 @@ export default {
   },
   methods:{
     /**
-     * Función que recolecta la información del Hotel para crear el Hotel
+     * Función que recolecta la información de la acomodación de la Habitación para crearla
      */
-    guardarHotel(){
+    guardarHabitacion(){
       let habitacion = {
-        hotel: this.hotel,
+        id_hotel: this.id_hotel,
         num_habs: this.num_habs,
         tipo_hab: this.tipo_hab,
         acomodacion: this.acomodacion,
       }
       console.log(habitacion);
-      // this.$router.push('hoteles');
+      this.axios.post('http://127.0.0.1:8000/api/habitaciones/new', habitacion).then((response) => {
+        console.log(response.data);
+      })
+      // this.$router.push('habitaciones');
+    },
+    getListaHoteles(){
+      this.axios.get('http://127.0.0.1:8000/api/hoteles/all').then((response) => {
+        console.log(response.data);
+        this.listaHoteles = response.data.hoteles;
+      })
     }
+  },
+  created() {
+    this.getListaHoteles();
   },
   /**
    * Validaciones del formulario
    */
   validations() {
     return {
-      hotel: {
+      id_hotel: {
         required
       },
       num_habs: {

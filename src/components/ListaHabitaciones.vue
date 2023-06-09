@@ -18,10 +18,13 @@
                     </thead>
                     <tbody v-if="numHabitaciones > 0">
                       <tr class="text-center" v-for="habitacion of listaHabitaciones">
-                          <td class="text-left">{{habitacion.hotel}}</td>
-                          <td>{{habitacion.cantidad}}</td>
-                          <td>{{habitacion.tipo_habitacion}}</td>
-                          <td>{{habitacion.acomodacion}}</td>
+                          <td class="text-left">{{habitacion.get_hotel.nombre}}</td>
+                          <td>{{habitacion.num_habs}}</td>
+                          <td>{{habitacion.tipo_hab}}</td>
+                          <td v-if="habitacion.acomodacion == 1">Sencilla</td>
+                          <td v-else-if="habitacion.acomodacion == 2">Doble</td>
+                          <td v-else-if="habitacion.acomodacion == 3">Triple</td>
+                          <td v-else-if="habitacion.acomodacion == 4">Cuadruple</td>
                       </tr>
                     </tbody>
                     <tbody v-else>
@@ -49,19 +52,24 @@ export default {
   data() {
     return {
       listaHabitaciones:[],
-      // listaHabitaciones:[
-      //   {
-
-      //   }
-      // ],
     }
+  },
+  methods:{
+    getListaHoteles(){
+      this.axios.get('http://127.0.0.1:8000/api/habitaciones/all').then((response) => {
+        this.listaHabitaciones = response.data.habitaciones;
+      })
+    }
+  },
+  created() {
+    this.getListaHoteles();
   },
   computed: {
     numHabitaciones() {
       const quantity = (this.listaHabitaciones) ? this.listaHabitaciones.length : 0;
       return quantity;
     }
-  }
+  },
 }
 </script>
 <style scoped>

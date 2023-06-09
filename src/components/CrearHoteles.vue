@@ -38,8 +38,8 @@
                   </div>
                   <div class="form-group mt-2 mb-2">
                     <label for="title">Número de habitaciones: </label>
-                    <input type="number" v-model="num_hab" @input="v$.num_hab.$touch()" class="form-control form-control-sm">
-                    <span v-if="v$.num_hab.$invalid && v$.num_hab.$dirty" class="" style="font-size: 12px; color:red;">
+                    <input type="number" v-model="num_habs" @input="v$.num_habs.$touch()" class="form-control form-control-sm">
+                    <span v-if="v$.num_habs.$invalid && v$.num_habs.$dirty" class="" style="font-size: 12px; color:red;">
                       Este campo es requerido y debe ser mayor a cero
                     </span>
                   </div>
@@ -78,7 +78,7 @@ export default {
       direccion: '',
       ciudad: '',
       nit: '',
-      num_hab: '',
+      num_habs: '',
     }
   },
   methods:{
@@ -91,10 +91,13 @@ export default {
         direccion: this.direccion,
         ciudad: this.ciudad,
         nit: this.nit,
-        num_hab: this.num_hab,
+        num_habs: this.num_habs,
       }
       console.log(hotel);
-      // this.$router.push('hoteles');
+      this.axios.post('http://127.0.0.1:8000/api/hoteles/new', hotel).then((response) => {
+        console.log(response.data);
+      })
+      this.$router.push('hoteles');
     }
   },
   /**
@@ -114,7 +117,7 @@ export default {
       nit: {
         required
       },
-      num_hab: {
+      num_habs: {
         minValue: minValue(1),
         required
       },

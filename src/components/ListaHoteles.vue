@@ -19,11 +19,11 @@
                     </thead>
                     <tbody v-if="numHoteles > 0">
                       <tr class="text-center" v-for="hotel of listaHoteles">
-                          <td class="text-left">{{hotel.name}}</td>
-                          <td>{{hotel.address}}</td>
-                          <td>{{hotel.city}}</td>
+                          <td class="text-left">{{hotel.nombre}}</td>
+                          <td>{{hotel.direccion}}</td>
+                          <td>{{hotel.ciudad}}</td>
                           <td>{{hotel.nit}}</td>
-                          <td>{{hotel.num_rooms}}</td>
+                          <td>{{hotel.num_habs}}</td>
                       </tr>
                     </tbody>
                     <tbody v-else>
@@ -46,29 +46,22 @@
   </div>
 </template>
 <script>
-// import axios from 'axios'
 export default {
   name: 'ListaHoteles',
   data(){
     return {
       listaHoteles: [],
-      /* listaHotelesi: [
-        {
-          name:'fdsafda',
-          address:'fdsafda',
-          city:'fdsafda',
-          nit:'fdsafda',
-          num_rooms:'fdsafda'
-        },
-        {
-          name:'fdsafda',
-          address:'fdsafda',
-          city:'fdsafda',
-          nit:'fdsafda',
-          num_rooms:'fdsafda'
-        },
-      ] */
     }
+  },
+  methods:{
+    getListaHoteles(){
+      this.axios.get('http://127.0.0.1:8000/api/hoteles/all').then((response) => {
+        this.listaHoteles = response.data.hoteles;
+      })
+    }
+  },
+  created() {
+    this.getListaHoteles();
   },
   computed: {
     numHoteles() {
