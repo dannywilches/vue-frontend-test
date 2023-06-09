@@ -103,7 +103,7 @@ export default {
       this.axios.post('http://127.0.0.1:8000/api/habitaciones/new', habitacion).then((response) => {
         console.log(response.data);
       })
-      // this.$router.push('habitaciones');
+      this.$router.push('habitaciones');
     },
     getListaHoteles(){
       this.axios.get('http://127.0.0.1:8000/api/hoteles/all').then((response) => {
