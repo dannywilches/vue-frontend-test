@@ -95,9 +95,26 @@ export default {
       }
       console.log(hotel);
       this.axios.post('http://127.0.0.1:8000/api/hoteles/new', hotel).then((response) => {
-        console.log(response.data);
+        console.log(response);
+        if (response.data.status == 201) {
+          this.$swal.fire(
+            'Notificación',
+            response.data.mensaje,
+            'success'
+          ).then((result) => {
+            this.$router.push('hoteles');
+          });
+        }
+        else {
+          this.$swal.fire(
+            'Notificación',
+            response.data.mensaje,
+            'error'
+          ).then((result) => {
+
+          });
+        }
       })
-      this.$router.push('hoteles');
     }
   },
   /**

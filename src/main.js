@@ -7,8 +7,11 @@ import VueAxios from 'vue-axios'
 import BootstrapVue from 'bootstrap-vue/dist/bootstrap-vue.esm';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import 'bootstrap/dist/css/bootstrap.css';
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 Vue.use(BootstrapVue);
+Vue.use(VueSweetalert2);
 Vue.use(VueAxios, axios)
 
 Vue.config.productionTip = false

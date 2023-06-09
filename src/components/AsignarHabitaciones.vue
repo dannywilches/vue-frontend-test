@@ -101,9 +101,26 @@ export default {
       }
       console.log(habitacion);
       this.axios.post('http://127.0.0.1:8000/api/habitaciones/new', habitacion).then((response) => {
-        console.log(response.data);
+        console.log(response);
+        if (response.data.status == 201) {
+          this.$swal.fire(
+            'Notificación',
+            response.data.mensaje,
+            'success'
+          ).then((result) => {
+            this.$router.push('habitaciones');
+          });
+        }
+        else {
+          this.$swal.fire(
+            'Notificación',
+            response.data.mensaje,
+            'error'
+          ).then((result) => {
+
+          });
+        }
       })
-      this.$router.push('habitaciones');
     },
     getListaHoteles(){
       this.axios.get('http://127.0.0.1:8000/api/hoteles/all').then((response) => {
